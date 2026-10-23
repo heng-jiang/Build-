@@ -1,0 +1,26 @@
+var (
+    lit bool
+    lastFrame int
+)
+
+func DrawFrame() {
+    if state == 1 && dashTicks > 0 {
+        setXYpos -178, playerY
+        frame := (ticks / 3) % 2
+        if frame != lastFrame {
+            if frame == 0 {
+                setCostume "glow0"
+            } else {
+                setCostume "glow1"
+            }
+            lastFrame = frame
+        }
+        if !lit {
+            show
+            lit = true
+        }
+    } else if lit {
+        hide
+        lit = false
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "x": 330,
+  "y": -26,
+  "size": 1,
+  "heading": 90,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "costumeIndex": 0,
+  "costumes": [
+    {
+      "name": "default",
+      "path": "energy-orb.png",
+      "x": 48.0,
+      "y": 60.0,
+      "bitmapResolution": 4,
+      "faceRight": 0,
+      "imageWidth": 96,
+      "imageHeight": 120
+    }
+  ]
+}

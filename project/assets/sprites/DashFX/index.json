@@ -1,0 +1,32 @@
+{
+  "x": -178,
+  "y": -78,
+  "size": 1,
+  "heading": 90,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "costumeIndex": 0,
+  "costumes": [
+    {
+      "name": "glow0",
+      "path": "glow0.png",
+      "x": 328,
+      "y": 180,
+      "bitmapResolution": 4,
+      "faceRight": 0,
+      "imageWidth": 656,
+      "imageHeight": 360
+    },
+    {
+      "name": "glow1",
+      "path": "glow1.png",
+      "x": 328,
+      "y": 180,
+      "bitmapResolution": 4,
+      "faceRight": 0,
+      "imageWidth": 656,
+      "imageHeight": 360
+    }
+  ]
+}

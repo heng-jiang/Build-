@@ -1,0 +1,22 @@
+{
+  "x": 330,
+  "y": -86,
+  "size": 1,
+  "heading": 90,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "costumeIndex": 0,
+  "costumes": [
+    {
+      "name": "default",
+      "path": "capture-ball.png",
+      "x": 84.0,
+      "y": 88.0,
+      "bitmapResolution": 4,
+      "faceRight": 0,
+      "imageWidth": 168,
+      "imageHeight": 176
+    }
+  ]
+}

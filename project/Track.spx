@@ -1,0 +1,10 @@
+var (
+    lastOffset float64
+)
+
+func DrawFrame() {
+    if trackOffset != lastOffset {
+        setXYpos 240 - trackOffset, 0
+        lastOffset = trackOffset
+    }
+}

@@ -1,0 +1,238 @@
+// Pikachu runner: fixed-step gameplay, pooled obstacles/energy, two scrolling layers.
+var (
+    score int
+    energy int
+    best int
+    state int
+    ticks int
+    speed float64
+    playerY float64
+    velocity float64
+    ballX [3]float64
+    ballActive [3]bool
+    energyX [4]float64
+    energyY [4]float64
+    energyActive [4]bool
+    ballGap float64
+    energyGap float64
+    farOffset float64
+    trackOffset float64
+    previousTime float64
+    accumulated float64
+    held bool
+    jumpsLeft int
+    dashTicks int
+    dashCooldown int
+    dashSeconds int
+)
+
+func resetRun() {
+    score = 0
+    energy = 0
+    ticks = 0
+    jumpsLeft = 2
+    dashTicks = 0
+    dashCooldown = 0
+    dashSeconds = 0
+    speed = 4
+    playerY = -78
+    velocity = 0
+    ballGap = 60
+    energyGap = 35
+    farOffset = 0
+    trackOffset = 0
+    for i := 0; i < 3; i++ {
+        ballActive[i] = false
+        ballX[i] = 900
+    }
+    for i := 0; i < 4; i++ {
+        energyActive[i] = false
+        energyX[i] = 900
+        energyY[i] = -26
+    }
+    accumulated = 0
+    previousTime = timer
+    held = true
+    state = 1
+    renderGame()
+}
+
+func jump() {
+    if state != 1 {
+        resetRun()
+        return
+    }
+    if jumpsLeft > 0 {
+        velocity = 11.5
+        jumpsLeft--
+    }
+}
+
+func dash() {
+    if state == 1 && dashCooldown == 0 {
+        dashTicks = 24
+        dashCooldown = 240
+    }
+}
+
+func spawnBall() {
+    for i := 0; i < 3; i++ {
+        if !ballActive[i] {
+            ballActive[i] = true
+            ballX[i] = float64(rand(290, 335))
+            return
+        }
+    }
+}
+
+func spawnEnergy() {
+    for i := 0; i < 4; i++ {
+        if !energyActive[i] {
+            energyActive[i] = true
+            energyX[i] = float64(rand(290, 340))
+            energyY[i] = float64(rand(-45, -14))
+            return
+        }
+    }
+}
+
+func renderGame() {
+    FarMeadow.DrawFrame()
+    Track.DrawFrame()
+    CaptureBall0.DrawFrame()
+    CaptureBall1.DrawFrame()
+    CaptureBall2.DrawFrame()
+    EnergyOrb0.DrawFrame()
+    EnergyOrb1.DrawFrame()
+    EnergyOrb2.DrawFrame()
+    EnergyOrb3.DrawFrame()
+    DashFX.DrawFrame()
+    Pikachu.DrawFrame()
+}
+
+func stepGame() {
+    ticks++
+    score = ticks / 6 + energy * 10
+    speed = 4 + float64(ticks) / 1800
+    if speed > 7 {
+        speed = 7
+    }
+    if dashCooldown > 0 {
+        dashCooldown--
+    }
+    dashSeconds = (dashCooldown + 59) / 60
+    if dashTicks > 0 {
+        dashTicks--
+        speed *= 1.65
+    }
+    velocity -= 0.6
+    playerY += velocity
+    if playerY < -78 {
+        playerY = -78
+        velocity = 0
+        jumpsLeft = 2
+    }
+    // Only positions change at runtime. All sprites and bitmaps were created at load time.
+    farOffset += speed * 0.22
+    trackOffset += speed
+    if farOffset >= 480 {
+        farOffset -= 480
+    }
+    if trackOffset >= 480 {
+        trackOffset -= 480
+    }
+    ballGap -= speed
+    energyGap -= speed
+    if ballGap <= 0 {
+        spawnBall()
+        ballGap = float64(rand(300, 540))
+    }
+    if energyGap <= 0 {
+        spawnEnergy()
+        energyGap = float64(rand(175, 300))
+    }
+    for i := 0; i < 3; i++ {
+        if ballActive[i] {
+            ballX[i] -= speed
+            if ballX[i] < -285 {
+                ballActive[i] = false
+                ballX[i] = 900
+            } else if dashTicks == 0 && ballX[i] > -174 && ballX[i] < -106 && playerY < -49 {
+                state = 2
+                if score > best {
+                    best = score
+                }
+                return
+            }
+        }
+    }
+    for i := 0; i < 4; i++ {
+        if energyActive[i] {
+            energyX[i] -= speed
+            if energyX[i] < -285 {
+                energyActive[i] = false
+                energyX[i] = 900
+                continue
+            }
+            if energyX[i] > -250 && energyX[i] < -30 && energyY[i] > playerY - 100 && energyY[i] < playerY + 100 {
+                energyX[i] += (-140 - energyX[i]) * 0.2
+                energyY[i] += (playerY - energyY[i]) * 0.2
+            }
+            if energyX[i] > -175 && energyX[i] < -105 && playerY > energyY[i] - 30 && playerY < energyY[i] + 30 {
+                energy++
+                energyActive[i] = false
+                energyX[i] = 900
+            }
+        }
+    }
+}
+
+onKey KeyX, => {
+    dash()
+}
+
+onKey KeyR, => {
+    resetRun()
+}
+
+onClick => {
+    jump()
+}
+
+onStart => {
+    state = 0
+    playerY = -78
+    renderGame()
+    previousTime = timer
+    for {
+        pressed := keyPressed(KeySpace) || keyPressed(KeyUp)
+        if pressed && !held {
+            jump()
+        }
+        held = pressed
+        now := timer
+        delta := now - previousTime
+        previousTime = now
+        if delta < 0 {
+            delta = 0
+        }
+        if delta > 0.05 {
+            delta = 0.05
+        }
+        if state == 1 {
+            accumulated += delta
+            for accumulated >= 0.0166667 {
+                stepGame()
+                accumulated -= 0.0166667
+                if state != 1 {
+                    accumulated = 0
+                    break
+                }
+            }
+            renderGame()
+        } else {
+            accumulated = 0
+        }
+        wait 0.001
+    }
+}

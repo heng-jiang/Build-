@@ -1,0 +1,53 @@
+var (
+    lastFrame int
+    lastMessage int
+    lastY float64
+)
+
+func DrawFrame() {
+    if playerY != lastY {
+        setXYpos -140, playerY
+        lastY = playerY
+    }
+    frame := 0
+    if state == 1 && playerY <= -78 {
+        frame = (ticks / 5) % 6
+    }
+    if frame != lastFrame {
+        if frame == 0 {
+            setCostume "run0"
+        } else if frame == 1 {
+            setCostume "run1"
+        } else if frame == 2 {
+            setCostume "run2"
+        } else if frame == 3 {
+            setCostume "run3"
+        } else if frame == 4 {
+            setCostume "run4"
+        } else if frame == 5 {
+            setCostume "run5"
+        }
+        lastFrame = frame
+    }
+    message := state + 1
+    if state == 1 && dashTicks > 0 {
+        message = 4
+    }
+    if message != lastMessage {
+        if state == 0 {
+            say "空格二段跳 · X 电光一闪 · 靠近吸电能球"
+        } else if state == 2 {
+            say "撞到精灵球啦！按 R 或点击重来"
+        } else if dashTicks > 0 {
+            say "电光一闪！"
+        } else {
+            say ""
+        }
+        lastMessage = message
+    }
+}
+
+
+onClick => {
+    jump()
+}

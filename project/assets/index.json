@@ -1,0 +1,97 @@
+{
+  "backdrops": [
+    {
+      "name": "sky",
+      "path": "sky.png",
+      "x": 240.0,
+      "y": 180.0,
+      "bitmapResolution": 1,
+      "faceRight": 0,
+      "imageWidth": 480,
+      "imageHeight": 360
+    }
+  ],
+  "backdropIndex": 0,
+  "map": {
+    "width": 480,
+    "height": 360
+  },
+  "run": {
+    "width": 480,
+    "height": 360
+  },
+  "maxFPS": 60,
+  "zorder": [
+    "FarMeadow",
+    "Track",
+    "CaptureBall0",
+    "CaptureBall1",
+    "CaptureBall2",
+    "EnergyOrb0",
+    "EnergyOrb1",
+    "EnergyOrb2",
+    "EnergyOrb3",
+    "DashFX",
+    "Pikachu",
+    {
+      "type": "monitor",
+      "name": "scoreDisplay",
+      "label": "分数",
+      "val": "score",
+      "target": "",
+      "mode": 1,
+      "x": -220,
+      "y": 160,
+      "visible": true,
+      "size": 1
+    },
+    {
+      "type": "monitor",
+      "name": "energyDisplay",
+      "label": "电能",
+      "val": "energy",
+      "target": "",
+      "mode": 1,
+      "x": -60,
+      "y": 160,
+      "visible": true,
+      "size": 1
+    },
+    {
+      "type": "monitor",
+      "name": "bestDisplay",
+      "label": "最高分",
+      "val": "best",
+      "target": "",
+      "mode": 1,
+      "x": 100,
+      "y": 160,
+      "visible": true,
+      "size": 1
+    },
+    {
+      "type": "monitor",
+      "name": "jumpsLeftDisplay",
+      "label": "跳跃次数",
+      "val": "jumpsLeft",
+      "target": "",
+      "mode": 1,
+      "x": -220,
+      "y": 130,
+      "visible": true,
+      "size": 1
+    },
+    {
+      "type": "monitor",
+      "name": "dashSecondsDisplay",
+      "label": "电光冷却秒",
+      "val": "dashSeconds",
+      "target": "",
+      "mode": 1,
+      "x": 20,
+      "y": 130,
+      "visible": true,
+      "size": 1
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+// 0 = hidden / idle, 1 = hidden / positioning, 2 = visible / moving left.
+var (
+    renderState int
+    preparedTick int
+)
+
+func DrawFrame() {
+    if !ballActive[1] {
+        if renderState != 0 {
+            hide
+            renderState = 0
+        }
+        // Never move a visible object from the left edge to the right edge.
+        return
+    }
+    if renderState == 0 {
+        // All pooled instances start hidden. Position them before showing them.
+        setXYpos ballX[1], -86
+        preparedTick = ticks
+        renderState = 1
+        return
+    }
+    setXYpos ballX[1], -86
+    if renderState == 1 && ticks - preparedTick >= 2 {
+        show
+        renderState = 2
+    }
+}

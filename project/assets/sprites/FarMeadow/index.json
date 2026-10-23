@@ -1,0 +1,22 @@
+{
+  "x": 240,
+  "y": 0,
+  "size": 1,
+  "heading": 90,
+  "visible": true,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "costumeIndex": 0,
+  "costumes": [
+    {
+      "name": "far",
+      "path": "far.png",
+      "x": 480.0,
+      "y": 180.0,
+      "bitmapResolution": 1,
+      "faceRight": 0,
+      "imageWidth": 960,
+      "imageHeight": 360
+    }
+  ]
+}
